@@ -1,0 +1,26 @@
+{
+  "name": "sports-scheduler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install .husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sriharsh05/sports-scheduler.git"
+  },
+  "author": "G.sriharsh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sriharsh05/sports-scheduler/issues"
+  },
+  "homepage": "https://github.com/sriharsh05/sports-scheduler#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3"
+  }
+}
