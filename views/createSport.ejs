@@ -8,28 +8,28 @@
     <title>Sports Scheduler</title>
 </head>
 <body>
-    <div class="flex justify-center items-center h-screen bg-teal-500">
-        <div class="w-96 p-6 shadow-lg bg-white rounded-md">
-      <%- include('header') %>
-      <a href="/signout">Signout</a>
-    <form action="/admin" method="post">
-        <div class="flex gap-2 py-4">
-            <div class="flex-auto">
-                <input type="text" 
-                    name="title" 
-                    placeholder="Add Sport" 
-                    class="border border-black-300 rounded text-black-900 w-full p-2 text-sm" 
-                     />
+    <div class="grid grid-cols-6">
+        <div class="col-start-3 col-span-2">
+          <%- include('header') %>
+          <a href="/signout" class="text-red-900 text-sm px-80">Signout</a>
+        <form action="/todos" method="post">
+            <div class="flex gap-2 py-4">
+                <div class="flex-auto">
+                    <input type="text" 
+                        name="sport" 
+                        placeholder="Add Sport" 
+                        class="border border-teal-800 rounded text-black-900 w-full p-2 text-sm" 
+                         />
+                </div>
+                <div class="flex-none">
+                    <button type="submit" 
+                        class="bg-teal-600 text-white px-5 py-1.5 rounded font-medium mr-2 mb-2">
+                            Add
+                    </button>
+                </div>
             </div>
-            <div class="flex-none">
-                <button type="submit" 
-                    class="bg-green-600 text-white px-5 py-1.5 rounded font-medium mr-2 mb-2">
-                        Add
-                </button>
-            </div>
+        </form>
         </div>
-    </form>
-    </div>
-   </div>  
+       </div>  
 </body>
 </html>

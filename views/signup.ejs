@@ -16,7 +16,7 @@
       <div class="w-96 p-6 shadow-lg bg-white rounded-md">
         <h1 class="text-3xl block text-center font-semibold"><i class="fa-solid fa-user"></i> Sign-up</h1>
         <hr class="mt-3">
-        <form action="/createSession" method="post">
+        <form action="/users" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
             <div class="mt-3">
               <label for="fisrtName" class="block text-base mb-2">Firstname</label>

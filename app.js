@@ -6,8 +6,15 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 var csrf = require("tiny-csrf");
 const user = require('./models/user');
-const flash = require("connect-flash");
+
+const passport = require("passport");
+const connectEnsureLogin = require("connect-ensure-login");
 const session = require("express-session");
+const flash = require("connect-flash");
+const LocalStrategy = require("passport-local");
+const bcrypt = require("bcrypt");
+
+const saltRounds = 10;
 
 app.use(cookieParser("ssh! some secret string"));
 app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
@@ -21,6 +28,46 @@ app.use(
   })
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password",
+    },
+    (username, password, done) => {
+      User.findOne({ where: { email: username } })
+        .then(async function (user) {
+          const result = await bcrypt.compare(password, user.password);
+          if (result) {
+            return done(null, user);
+          } else {
+            return done(null, false, { message: "Invalid password" });
+          }
+        })
+        .catch((error) => {
+          return done(err);
+        });
+    }
+  )
+);
+
+passport.serializeUser((user, done) => {
+  console.log("Serializing user in session", user.id);
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findByPk(id)
+    .then((user) => {
+      done(null, user);
+    })
+    .catch((error) => {
+      done(error, null);
+    });
+});
 
 
 
@@ -52,7 +99,16 @@ app.get("/signup", async (request, response) => {
     response.render("login", { title: "Login", csrfToken: request.csrfToken() });
   });
 
-  app.post("/createSession", async (request, response) => {
+  app.get("/signout", (request, response, next) => {
+    request.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      response.redirect("/");
+    });
+  });
+
+  app.post("/users", async (request, response) => {
     if (request.body.firstName.length == 0) {
       request.flash("error", "Please, Fill the First name!");
       return response.redirect("/signup");
@@ -65,19 +121,53 @@ app.get("/signup", async (request, response) => {
       request.flash("error", "Please, Fill the Password!");
       return response.redirect("/signup");
     }
+    const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
     //Creating a user
     try {
       const user = await User.create({
         firstName: request.body.firstName,
         lastName: request.body.lastName,
         email: request.body.email,
-        password: request.body.password,
+        password: hashedPwd,
         role: "player"
       });
-      response.render("createSession");
+      request.login(user, (err) => {
+        if (err) {
+          console.log(err);
+          res.redirect("/createSession");
+        } else {
+          request.flash("success", "Sign up successful");
+          response.redirect("/createSession");
+        }
+      });
     } catch (error) {
       console.log(error);
+      request.flash("error", "User already Exists");
       return response.redirect("/signup");
+    }
+  });
+
+  app.post(
+    "/session",
+    passport.authenticate("local", {
+      failureRedirect: "/login",
+      failureFlash: true,
+    }),
+    function (request, response) {
+      console.log(request.user);
+      response.redirect("/createSession");
+    }
+  );
+
+
+
+  app.get("/createSession",connectEnsureLogin.ensureLoggedIn(), (request, response) => {
+    const UserName = request.user.firstName;
+    if (request.accepts("html")) {
+    response.render("createSession",{UserName,});
+    }
+    else {
+      response.json({UserName});
     }
   });
 
@@ -85,10 +175,5 @@ app.get("/signup", async (request, response) => {
     response.render("createSport");
   });
 
-
-
-  // app.post("/users", async (request, response) => {
-  //   response.render("admin", { title: "users", csrfToken: request.csrfToken() });
-  // });
 
 module.exports = app;
