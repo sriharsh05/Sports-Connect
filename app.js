@@ -155,7 +155,11 @@ app.get("/signup", async (request, response) => {
     }),
     function (request, response) {
       console.log(request.user);
+      if (request.user.role === "admin") {
+        response.redirect("/createSport");
+      } else {
       response.redirect("/createSession");
+      }
     }
   );
 
