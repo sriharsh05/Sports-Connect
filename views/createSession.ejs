@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content= "<%= csrfToken %>"/>
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Sports Scheduler</title>
 </head>
 <body>
@@ -12,20 +12,19 @@
     <div class="col-start-3 col-span-2">
       <%- include('header') %>
       <a href="/signout">Signout</a>
-    <form action="/todos" method="post">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-        <div class="flex gap-2 py-4">
-            <div class="flex-auto">
-                <input type="text" 
-                    name="title" 
-                    placeholder="Add Sport" 
+    <form action="/" method="post">
+        <input type="date" 
+                    name="date" 
                     class="border border-black-300 rounded text-black-900 w-full p-2 text-sm" 
                      />
-            </div>
+        <input type="time" 
+                name="time" 
+                class="border border-black-300 rounded text-black-900 w-full p-2 text-sm" 
+                />             
             <div class="flex-none">
                 <button type="submit" 
                     class="bg-green-600 text-white px-5 py-1.5 rounded font-medium mr-2 mb-2">
-                        Add
+                        Select
                 </button>
             </div>
         </div>
