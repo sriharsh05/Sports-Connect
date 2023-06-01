@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Sports Scheduler</title>
+</head>
+<body>
+    <div class="grid grid-cols-6">
+        <div class="col-start-3 col-span-2">
+          <%- include('header') %>
+          <a href="/signout" class="text-red-900 text-sm px-80">Signout</a>
+          <h1 class="text-xxl font-semibold text-black-600 mb-90">Welcome <%= UserName %>!</h1>
+          <h3 class="text-xl font-semibold text-black-600">Administrative actions</h3>
+          <a href="/createSport" class="text-teal-500 text-m px-8">Create Sport</a>
+          <a href="/reports" class="text-teal-500 text-m px-8">reports</a>
+            </div>
+        </div>
+        </form>
+        </div>
+       </div>  
+</body>
+</html>

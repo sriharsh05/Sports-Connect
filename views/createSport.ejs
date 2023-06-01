@@ -12,7 +12,9 @@
         <div class="col-start-3 col-span-2">
           <%- include('header') %>
           <a href="/signout" class="text-red-900 text-sm px-80">Signout</a>
-        <form action="/todos" method="post">
+          <h1 class="text-l font-semibold text-black-600 mb-90"><%= UserName %></h1>
+          <h1 class="text-xl font-semibold text-black-600 mb-90">Create a New Sport</h1>
+        <form action="/sports" method="post">
             <div class="flex gap-2 py-4">
                 <div class="flex-auto">
                     <input type="text" 

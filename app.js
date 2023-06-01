@@ -71,7 +71,7 @@ passport.deserializeUser((id, done) => {
 
 
 
-const { User } = require("./models");
+const { User, Sports } = require("./models");
 
 //set ejs as view engine
 app.set("view engine", "ejs");
@@ -156,7 +156,7 @@ app.get("/signup", async (request, response) => {
     function (request, response) {
       console.log(request.user);
       if (request.user.role === "admin") {
-        response.redirect("/createSport");
+        response.redirect("/adminpage");
       } else {
       response.redirect("/createSession");
       }
@@ -175,9 +175,38 @@ app.get("/signup", async (request, response) => {
     }
   });
 
-  app.get("/createSport", (request, response) => {
-    response.render("createSport");
+  app.get("/adminpage",connectEnsureLogin.ensureLoggedIn(), (request, response) => {
+    const UserName = request.user.firstName;
+    response.render("adminpage",{UserName,});
   });
+
+  app.get("/createSport",connectEnsureLogin.ensureLoggedIn(), (request, response) => {
+    const UserName = request.user.firstName;
+    response.render("createSport",{UserName,});
+  });
+
+  // app.post(
+  //   "/sports",
+  //   connectEnsureLogin.ensureLoggedIn(),
+  //   async (request, response) => {
+  //     if (request.body.sport.length == 0) {
+  //       request.flash("error", "Please, Fill the sport!");
+  //       return response.redirect("/createSport");
+  //     }
+  //     try {
+  //       await Sports.addTodo({
+  //         title: request.body.title,
+  //         dueDate: request.body.dueDate,
+  //         completed: false,
+  //         userId: request.user.id,
+  //       });
+  //       return response.redirect("/todo");
+  //     } catch (error) {
+  //       console.log(error);
+  //       return response.status(422).json(error);
+  //     }
+  //   }
+  // );
 
 
 module.exports = app;
