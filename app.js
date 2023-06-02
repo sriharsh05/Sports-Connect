@@ -198,6 +198,7 @@ app.get("/signup", async (request, response) => {
       try {
         await Sport.addSport({
           name: request.body.name,
+          userId: request.user.id,
         });
         return response.redirect("/adminpage");
       } catch (error) {
