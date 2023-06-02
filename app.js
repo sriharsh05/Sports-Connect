@@ -6,6 +6,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 var csrf = require("tiny-csrf");
 const user = require('./models/user');
+const sport = require('./models/sport');
 
 const passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
@@ -17,8 +18,6 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 app.use(cookieParser("ssh! some secret string"));
-app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
-app.use(flash());
 app.use(
   session({
     secret: "my-super-secret-key-7643643789328",
@@ -27,6 +26,9 @@ app.use(
     },
   })
 );
+app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
+app.use(flash());
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -71,7 +73,7 @@ passport.deserializeUser((id, done) => {
 
 
 
-const { User, Sports } = require("./models");
+const { User, Sport } = require("./models");
 
 //set ejs as view engine
 app.set("view engine", "ejs");
@@ -168,45 +170,42 @@ app.get("/signup", async (request, response) => {
   app.get("/createSession",connectEnsureLogin.ensureLoggedIn(), (request, response) => {
     const UserName = request.user.firstName;
     if (request.accepts("html")) {
-    response.render("createSession",{UserName,});
+    response.render("createSession",{UserName,csrfToken: request.csrfToken()});
     }
     else {
-      response.json({UserName});
+      response.json({UserName,csrfToken: request.csrfToken()});
     }
   });
 
   app.get("/adminpage",connectEnsureLogin.ensureLoggedIn(), (request, response) => {
     const UserName = request.user.firstName;
-    response.render("adminpage",{UserName,});
+    response.render("adminpage",{UserName,csrfToken: request.csrfToken()});
   });
 
   app.get("/createSport",connectEnsureLogin.ensureLoggedIn(), (request, response) => {
     const UserName = request.user.firstName;
-    response.render("createSport",{UserName,});
+    response.render("createSport",{UserName,csrfToken: request.csrfToken()});
   });
 
-  // app.post(
-  //   "/sports",
-  //   connectEnsureLogin.ensureLoggedIn(),
-  //   async (request, response) => {
-  //     if (request.body.sport.length == 0) {
-  //       request.flash("error", "Please, Fill the sport!");
-  //       return response.redirect("/createSport");
-  //     }
-  //     try {
-  //       await Sports.addTodo({
-  //         title: request.body.title,
-  //         dueDate: request.body.dueDate,
-  //         completed: false,
-  //         userId: request.user.id,
-  //       });
-  //       return response.redirect("/todo");
-  //     } catch (error) {
-  //       console.log(error);
-  //       return response.status(422).json(error);
-  //     }
-  //   }
-  // );
+  app.post(
+    "/sports",
+    async (request, response) => {
+      // console.log(request.body);
+      // if (request.body.name.length == 0) {
+      //   request.flash("error", "Please, Fill the sport!");
+      //   return response.redirect("/createSport");
+      // }
+      try {
+        await Sport.addSport({
+          name: request.body.name,
+        });
+        return response.redirect("/adminpage");
+      } catch (error) {
+        console.log(error);
+        return response.status(422).json(error);
+      }
+    }
+  );
 
 
 module.exports = app;

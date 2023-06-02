@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content= "<%= csrfToken %>"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Sports Scheduler</title>
 </head>
@@ -14,6 +15,7 @@
       <a href="/signout">Signout</a>
       <h3 class="text-l font-semibold text-black-600"><%= UserName %></h3>
     <form action="/" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
         <input type="date" 
                     name="date" 
                     class="border border-black-300 rounded text-black-900 w-full p-2 text-sm" 
