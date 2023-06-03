@@ -21,9 +21,11 @@
           <hr class="bg-zinc-100 h-px">
           <h3 class="text-xl font-serif text-black-600">Available sports</h3>
             <ul class="space-y-2">
-                <li><a href="#" class="text-sky-900 hover:underline">Basketball</a></li>
-                <li><a href="#" class="text-sky-900 hover:underline">Football</a></li>
-                <li><a href="#" class="text-sky-900 hover:underline">Tennis</a></li>
+            <% for(var i=0; i<sportsList.length; i++) { %>
+              <li><a href="#" class="text-sky-900 hover:underline">
+                <%= sportsList[i].name %>
+              </a></li>
+           <% } %>
                 <!-- Add more sports as needed -->
               </ul>  
          </div>

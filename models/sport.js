@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
        userId,
       });
     }
+
+    static getAllSports(userId){
+      return this.findAll();
+    }
+
   }
   Sport.init({
     name: DataTypes.STRING

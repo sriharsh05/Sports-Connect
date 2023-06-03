@@ -177,25 +177,35 @@ app.get("/signup", async (request, response) => {
     }
   });
 
-  app.get("/adminpage",connectEnsureLogin.ensureLoggedIn(), (request, response) => {
+  app.get("/adminpage",connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     const UserName = request.user.firstName;
-    response.render("adminpage",{UserName,csrfToken: request.csrfToken()});
+    const sportsList = await Sport.getAllSports(loggedinUser);
+    const getUser = await user.getUser(loggedinUser);
+    response.render("adminpage",{UserName,sportsList,csrfToken: request.csrfToken()});
   });
 
-  app.get("/createSport",connectEnsureLogin.ensureLoggedIn(), (request, response) => {
+  app.get("/createSport",connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     const UserName = request.user.firstName;
     response.render("createSport",{UserName,csrfToken: request.csrfToken()});
   });
 
   app.post(
     "/sports",
+    connectEnsureLogin.ensureLoggedIn(),
     async (request, response) => {
-      // console.log(request.body);
-      // if (request.body.name.length == 0) {
-      //   request.flash("error", "Please, Fill the sport!");
-      //   return response.redirect("/createSport");
-      // }
+      if (request.body.name.length == 0) {
+        request.flash("error", "Please, Fill the sport!");
+        return response.redirect("/createSport");
+      }
       try {
+        const enteredSport = request.body.name;
+        const sportsList = await Sport.getAllSports();
+        for(const sport of sportsList){
+          if(sport.name == enteredSport){
+            request.flash("error", "Sport already exists!");
+            return response.redirect("/createSport");
+          }
+        }
         await Sport.addSport({
           name: request.body.name,
           userId: request.user.id,
