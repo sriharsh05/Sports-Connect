@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 var csrf = require("tiny-csrf");
+const path = require("path");
 const user = require('./models/user');
 const sport = require('./models/sport');
 
@@ -77,6 +78,8 @@ const { User, Sport } = require("./models");
 
 //set ejs as view engine
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
+app.set("views", path.join(__dirname, "views"));
 
 app.use(function (request, response, next) {
   response.locals.messages = request.flash();
