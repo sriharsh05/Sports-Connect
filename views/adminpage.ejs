@@ -8,19 +8,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Sports Scheduler</title>
 </head>
-<body>
-    <div class="grid grid-cols-6">
-        <div class="col-start-3 col-span-2">
-          <%- include('header') %>
-          <a href="/signout" class="text-red-900 text-sm px-80">Signout</a>
-          <h1 class="text-xxl font-semibold text-black-600 mb-90">Welcome <%= UserName %>!</h1>
-          <h3 class="text-xl font-semibold text-black-600">Administrative actions</h3>
-          <a href="/createSport" class="text-teal-500 text-m px-8">Create Sport</a>
-          <a href="/reports" class="text-teal-500 text-m px-8">reports</a>
-            </div>
-        </div>
-        </form>
-        </div>
-       </div>  
+<body class="bg-stone-300">
+        <%- include('header') %>
+        <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
+        <div class="container mx-auto px-10 py-4">
+        <h1 class="text-4xl font-serif text-grey-600 mb-90">Welcome <%= UserName %>!</h1>
+        <h3 class="text-xl font-serif text-black-600">Administrative actions</h3>
+          <div class="flex mb-4">
+            <a href="/createSport" class="mr-4 font-serif text-sky-900 hover:underline">Create</a>
+            <a href="/reports" class="font-serif text-sky-900 hover:underline">Reports</a>
+          </div>
+          <hr class="bg-zinc-100 h-px">
+          <h3 class="text-xl font-serif text-black-600">Available sports</h3>
+            <ul class="space-y-2">
+                <li><a href="#" class="text-sky-900 hover:underline">Basketball</a></li>
+                <li><a href="#" class="text-sky-900 hover:underline">Football</a></li>
+                <li><a href="#" class="text-sky-900 hover:underline">Tennis</a></li>
+                <!-- Add more sports as needed -->
+              </ul>  
+         </div>
 </body>
 </html>
