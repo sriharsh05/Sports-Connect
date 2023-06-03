@@ -20,14 +20,28 @@
           </div>
           <hr class="bg-zinc-100 h-px">
           <h3 class="text-xl font-serif text-black-600">Available sports</h3>
+          <h4 class="text-l mt-5 font-serif text-black-600">Created by you </h4>
             <ul class="space-y-2">
             <% for(var i=0; i<sportsList.length; i++) { %>
+              <% if(sportsList[i].userId == userdetils.id) { %>
               <li><a href="#" class="text-sky-900 hover:underline">
                 <%= sportsList[i].name %>
               </a></li>
+              <% } %>
            <% } %>
                 <!-- Add more sports as needed -->
-              </ul>  
+              </ul> 
+              <h4 class="text-l mt-5 font-serif text-black-600">Created by other admins </h4>
+              <ul class="space-y-2">
+                <% for(var i=0; i<sportsList.length; i++) { %>
+                  <% if(sportsList[i].userId != userdetils.id) { %>
+                  <li><a href="#" class="text-sky-900 hover:underline">
+                    <%= sportsList[i].name %>
+                  </a></li>
+                  <% } %>
+               <% } %>
+                    <!-- Add more sports as needed -->
+                  </ul> 
          </div>
 </body>
 </html>

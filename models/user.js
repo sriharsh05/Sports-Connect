@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
       });
     }
+
+    static async getUserDetails(userId) {
+      return this.findByPk(userId);
+    }
+
   }
   User.init({
     firstName: DataTypes.STRING,

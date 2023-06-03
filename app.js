@@ -178,10 +178,11 @@ app.get("/signup", async (request, response) => {
   });
 
   app.get("/adminpage",connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    const loggedInUser = request.user.id;
     const UserName = request.user.firstName;
-    const sportsList = await Sport.getAllSports(loggedinUser);
-    const getUser = await user.getUser(loggedinUser);
-    response.render("adminpage",{UserName,sportsList,csrfToken: request.csrfToken()});
+    const sportsList = await Sport.getAllSports(loggedInUser);
+    const userdetils = await User.getUserDetails(loggedInUser);
+    response.render("adminpage",{UserName,sportsList,userdetils,csrfToken: request.csrfToken()});
   });
 
   app.get("/createSport",connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
