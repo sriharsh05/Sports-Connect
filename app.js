@@ -87,7 +87,7 @@ app.use(function (request, response, next) {
 });
 
 
-
+// Defining the routes
 
 app.get("/", async (request, response) => {
   response.render("index", {
