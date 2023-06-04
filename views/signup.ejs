@@ -1,48 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <meta name="csrf-token" content= "<%= csrfToken %>"/>
-    <title>
-        <%= title %>
-    </title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body>
-    <%- include("header.ejs") %> 
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="csrf-token" content="<%= csrfToken %>" />
+  <title>
+    <%= title %>
+  </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  <%- include("header.ejs") %>
     <div class="flex justify-center items-center h-screen bg-stone-300">
       <div class="w-96 p-6 shadow-lg bg-white rounded-md">
         <h1 class="text-3xl block text-center font-semibold"><i class="fa-solid fa-user"></i> Sign-up</h1>
         <hr class="mt-3">
         <form action="/users" method="post">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
-            <div class="mt-3">
-              <label for="fisrtName" class="block text-base mb-2">Firstname</label>
-              <input type="text" name="firstName" class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Enter Firstname" />
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <div class="mt-3">
+            <label for="fisrtName" class="block text-base mb-2">Firstname</label>
+            <input type="text" name="firstName"
+              class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+              placeholder="Enter Firstname" />
           </div>
-        <div class="mt-3">
-          <label for="lastName" class="block text-base mb-2">Lastname</label>
-          <input type="text" name="lastName" class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Enter Lastname" />
-      </div> 
-        <div class="mt-3">
-          <label for="email" class="block text-base mb-2">Email</label>
-          <input type="text" name="email" class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Enter Email" />
-      </div>  
-      <div class="mt-3">
-        <label for="password" class="block text-base mb-2">Password</label>
-        <input type="password" name="password" class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Enter Password" />
-    </div>  
-    <div class="mt-5">
-      <button type="submit" class="border-2 border-sky-900 bg-sky-900 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-sky-900 font-semibold"><i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;Sign-UP</button>
-    </div>  
+          <div class="mt-3">
+            <label for="lastName" class="block text-base mb-2">Lastname</label>
+            <input type="text" name="lastName"
+              class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+              placeholder="Enter Lastname" />
+          </div>
+          <div class="mt-3">
+            <label for="email" class="block text-base mb-2">Email</label>
+            <input type="text" name="email"
+              class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+              placeholder="Enter Email" />
+          </div>
+          <div class="mt-3">
+            <label for="password" class="block text-base mb-2">Password</label>
+            <input type="password" name="password"
+              class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+              placeholder="Enter Password" />
+          </div>
+          <div class="mt-5">
+            <button type="submit"
+              class="border-2 border-sky-900 bg-sky-900 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-sky-900 font-semibold"><i
+                class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;Sign-UP</button>
+          </div>
         </form>
-        <% if(messages && messages.error && messages.error.length > 0)  { %>
+        <% if(messages && messages.error && messages.error.length> 0) { %>
           <% for(var i=0; i<messages.error.length; i++) { %>
-                  <li> <%= messages.error[i] %></li>
-          <% } %>
-        <% } %>
-        </div>
+            <li>
+              <%= messages.error[i] %>
+            </li>
+            <% } %>
+              <% } %>
+      </div>
     </div>
-  </body>
+</body>
+
 </html>

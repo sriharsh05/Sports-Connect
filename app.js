@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const express = require("express");
-const app = express();
+const app = express()
 const bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 app.use(bodyParser.json());

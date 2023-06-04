@@ -1,31 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content= "<%= csrfToken %>"/>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Sports Scheduler</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="<%= csrfToken %>" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Sports Scheduler</title>
 </head>
+
 <body class="bg-stone-300">
-        <%- include('header') %>
-        <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
-        <div class="container mx-auto px-10 py-4">
-        <h1 class="text-4xl font-serif text-grey-600 mb-90">Welcome <%= UserName %>!</h1>
-          <hr class="bg-zinc-100 h-px">
-          <h3 class="text-xl font-serif text-black-600">Available sports</h3>
-            <ul class="space-y-2">
-            <% for(var i=0; i<sportsList.length; i++) { %>
-              <li class="Sport-Item">
-                <div class="flex mt-2">
-                <a href="#" class="text-sky-900 hover:underline">
-                   <%= sportsList[i].name %>
-                 </a>
-                 </div>
-            </li>
-           <% } %>
-        </ul> 
-         </div>
+  <%- include('header') %>
+    <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
+    <div class="container mx-auto px-10 py-4">
+      <h1 class="text-4xl font-serif text-grey-600 mb-90">Welcome <%= UserName %>!</h1>
+      <hr class="bg-zinc-100 h-px">
+      <h3 class="text-xl font-serif text-black-600">Available sports</h3>
+      <ul class="space-y-2">
+        <% for(var i=0; i<sportsList.length; i++) { %>
+          <li class="Sport-Item">
+            <div class="flex mt-2">
+              <a href="#" class="text-sky-900 hover:underline">
+                <%= sportsList[i].name %>
+              </a>
+            </div>
+          </li>
+          <% } %>
+      </ul>
+    </div>
 </body>
+
 </html>
