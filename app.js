@@ -139,10 +139,10 @@ app.get("/signup", async (request, response) => {
       request.login(user, (err) => {
         if (err) {
           console.log(err);
-          res.redirect("/createSession");
+          res.redirect("/signup");
         } else {
           request.flash("success", "Sign up successful");
-          response.redirect("/createSession");
+          response.redirect("/playerhome");
         }
       });
     } catch (error) {
@@ -163,17 +163,19 @@ app.get("/signup", async (request, response) => {
       if (request.user.role === "admin") {
         response.redirect("/adminpage");
       } else {
-      response.redirect("/createSession");
+      response.redirect("/playerhome");
       }
     }
   );
 
 
 
-  app.get("/createSession",connectEnsureLogin.ensureLoggedIn(), (request, response) => {
+  app.get("/playerhome",connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+    const loggedInUser = request.user.id;
     const UserName = request.user.firstName;
+    const sportsList = await Sport.getAllSports(loggedInUser);
     if (request.accepts("html")) {
-    response.render("createSession",{UserName,csrfToken: request.csrfToken()});
+    response.render("playerhome",{UserName,sportsList,csrfToken: request.csrfToken()});
     }
     else {
       response.json({UserName,csrfToken: request.csrfToken()});
@@ -217,6 +219,20 @@ app.get("/signup", async (request, response) => {
         return response.redirect("/adminpage");
       } catch (error) {
         console.log(error);
+        return response.status(422).json(error);
+      }
+    }
+  );
+
+  app.delete(
+    "/sports/:id",
+    connectEnsureLogin.ensureLoggedIn(),
+    async (request, response) => {
+      console.log("Deleting a Sport with ID: ", request.params.id);
+      try {
+        await Sport.remove(request.params.id, request.user.id);
+        return response.json({ success: true });
+      } catch (error) {
         return response.status(422).json(error);
       }
     }
