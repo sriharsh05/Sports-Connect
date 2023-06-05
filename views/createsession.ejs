@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Sports Scheduler</title>
+</head>
+
+<body class="bg-stone-300">
+    include('header')
+    <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
+    <div class="grid grid-cols-7">
+        <div class="col-start-3 col-span-3">
+            <div class="w-100 p-6 shadow-lg bg-white rounded-md">
+                <h1 class="text-l font-serif text-black-600 mb-90">
+                    <%= userdetils.name %>
+                </h1>
+                <h1 class="text-xl font-serif text-black-600 mb-90 mt-2">
+                    <%=sport.name%>
+                </h1>
+                <form action="/createsession" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                    <input type="text" name="sportId" class="hidden" value="<%= sport.id %>" hidden>
+                    <div class="m-2">
+                        <label class="text-xl mb-2">Input Date and Time of session</label>
+                        <input type="datetime-local" name="dateTime"
+                            class="border w-full mt-3 text-l px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-900 border-gray-400">
+                    </div>
+                    <div class="m-2">
+                        <label class="text-xl mb-2">Input Address of session to be held</label>
+                        <textarea name="address" cols="50" rows="5"
+                            class="border w-full mt-3 text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-900 border-gray-400"></textarea>
+
+                    </div>
+                    <div class="m-2">
+                        <label class="text-xl mb-2">Enter Players Joining sessions(Comma-seperated)</label>
+                        <input type="text" name="playernames"
+                            class="border w-full mt-3 text-l px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-900 border-gray-400">
+                    </div>
+                    <div class="m-2">
+                        <label class="text-xl mb-2 ">Input total No. of Players</label>
+                        <input type="number" name="playersLimit"
+                            class="border w-full mt-3 text-l px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-900 border-gray-400">
+                    </div>
+                    <div class="mt-5">
+                        <button type="submit"
+                            class="border-2 border-sky-900 bg-sky-900 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-sky-900 font-semibold"><i
+                                class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;Submit</button>
+                    </div>
+                </form>
+
+                <% if(messages && messages.error && messages.error.length> 0) { %>
+                    <% for(var i=0; i<messages.error.length; i++) { %>
+                        <li>
+                            <%= messages.error[i] %>
+                        </li>
+                        <% } %>
+                            <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

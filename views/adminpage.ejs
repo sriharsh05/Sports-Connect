@@ -50,7 +50,7 @@
           <% if(sportsList[i].userId==userdetils.id) { %>
             <li class="Sport-Item">
               <div class="flex mt-2">
-                <a href="#" class="text-sky-900 hover:underline">
+                <a href="sessionpage/<%= sportsList[i].id %>" class="text-sky-900 hover:underline">
                   <%= sportsList[i].name %>
                 </a>
                 <a href="#" class="hidden trash-icon ml-2" onclick="deleteTodo(<%= sportsList[i].id %>)">
@@ -69,7 +69,7 @@
       <ul class="space-y-2">
         <% for(var i=0; i<sportsList.length; i++) { %>
           <% if(sportsList[i].userId !=userdetils.id) { %>
-            <li><a href="#" class="text-sky-900 hover:underline">
+            <li><a href="sessionpage/<%= sportsList[i].id %>" class="text-sky-900 hover:underline">
                 <%= sportsList[i].name %>
               </a></li>
             <% } %>

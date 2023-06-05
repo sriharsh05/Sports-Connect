@@ -13,8 +13,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Session.belongsTo(models.User,{
         foreignKey: 'userId'
-      })
-      
+      }) 
+    }
+
+    static createSession({sportname,time,address,playernames,playerscount,sessioncreated,userId,}) {
+      return this.create({
+        sportname,
+          time,
+          address,
+          playernames,
+          playerscount,
+          sessioncreated,
+          userId,
+      });
     }
   }
   Session.init({

@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
+    static findSportById(id, userId) {
+      return this.findByPk(id);
+    }
+
   }
   Sport.init({
     name: DataTypes.STRING

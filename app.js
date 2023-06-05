@@ -7,8 +7,6 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 var csrf = require("tiny-csrf");
 const path = require("path");
-const user = require("./models/user");
-const sport = require("./models/sport");
 
 const passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
@@ -72,7 +70,7 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-const { User, Sport } = require("./models");
+const { User, Sport, Session } = require("./models");
 
 //set ejs as view engine
 app.set("view engine", "ejs");
@@ -168,6 +166,8 @@ app.post(
   }
 );
 
+//initial routes
+
 app.get(
   "/playerhome",
   connectEnsureLogin.ensureLoggedIn(),
@@ -204,6 +204,7 @@ app.get(
   }
 );
 
+// Creating sports
 app.get(
   "/createSport",
   connectEnsureLogin.ensureLoggedIn(),
@@ -255,6 +256,73 @@ app.delete(
       return response.json({ success: true });
     } catch (error) {
       return response.status(422).json(error);
+    }
+  }
+);
+
+// Creating Sessions
+
+app.get(
+  "/sessionpage/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const sport = await Sport.findSportById(
+      request.params.id,
+      request.user.id
+    );
+    const userdetils = await User.getUserDetails(request.user.id);
+    response.render("sessionpage", {
+      userdetils,
+      sport,
+      sportID: sport.id,
+      csrfToken: request.csrfToken(),
+    });
+  }
+);
+
+app.get(
+  "/createsession/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const userdetils = await User.getUserDetails(request.user.id);
+    const sport = await Sport.findSportById(request.params.id);
+    if (request.accepts("HTML")) {
+      response.render("createsession", {
+        sport,
+        userdetils,
+        csrfToken: request.csrfToken(),
+      });
+    } else {
+      response.json({
+        sportId: request.params.id,
+        userdetils,
+        csrfToken: request.csrfToken(),
+      });
+    }
+  }
+);
+
+app.post(
+  "/createsession",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const players = request.body.playernames.split(",");
+    const sport = await Sport.findSportById(request.body.sportId);
+    try {
+       if (players.length < request.body.playersLimit) {
+        await Session.createSession({
+          sportname: sport.id,
+          time: request.body.dateTime,
+          address: request.body.address,
+          playernames: playerArray,
+          playerscount: request.body.playersLimit,
+          sessioncreated: true,
+          userId: request.user.id,
+        });
+        response.redirect(`/sessionpage/${sport.id}`);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 );
