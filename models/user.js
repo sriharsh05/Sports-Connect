@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Sport,{
         foreignKey: "userId",
       });
+
+      User.hasMany(models.Session,{
+        foreignKey: "userId",
+      });
     }
 
     static async getUserDetails(userId) {
