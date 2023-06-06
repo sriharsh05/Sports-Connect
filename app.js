@@ -263,24 +263,6 @@ app.delete(
 // Creating Sessions
 
 app.get(
-  "/sessionpage/:id",
-  connectEnsureLogin.ensureLoggedIn(),
-  async (request, response) => {
-    const sport = await Sport.findSportById(
-      request.params.id,
-      request.user.id
-    );
-    const userdetils = await User.getUserDetails(request.user.id);
-    response.render("sessionpage", {
-      userdetils,
-      sport,
-      sportID: sport.id,
-      csrfToken: request.csrfToken(),
-    });
-  }
-);
-
-app.get(
   "/createsession/:id",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
@@ -314,7 +296,7 @@ app.post(
           sportname: sport.id,
           time: request.body.dateTime,
           address: request.body.address,
-          playernames: playerArray,
+          playernames: players,
           playerscount: request.body.playersLimit,
           sessioncreated: true,
           userId: request.user.id,
@@ -327,4 +309,25 @@ app.post(
   }
 );
 
+app.get(
+  "/sessionpage/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const sport = await Sport.findSportById(
+      request.params.id,
+      request.user.id
+    );
+    const sessions = await Session.findSessionsBySportId({
+      sportid:sport.id,
+      userId:request.user.id,
+     });
+    const userdetils = await User.getUserDetails(request.user.id);
+    response.render("sessionpage", {
+      userdetils,
+      sport,
+      sessions,
+      csrfToken: request.csrfToken(),
+    });
+  }
+);
 module.exports = app;

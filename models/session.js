@@ -1,6 +1,7 @@
 'use strict';
 const {
-  Model
+  Model,
+  Op
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Session extends Model {
@@ -25,6 +26,18 @@ module.exports = (sequelize, DataTypes) => {
           playerscount,
           sessioncreated,
           userId,
+      });
+    }
+
+    static findSessionsBySportId({sportid,userId}) {
+      return this.findAll({
+        where: {
+          sportname: sportid,
+          sessioncreated: true,
+          time: {
+            [Op.gt]: new Date(),
+          },
+        },
       });
     }
   }
