@@ -15,21 +15,22 @@
     <%- include('header') %>
         <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
         <div class="container mx-auto px-10 py-4">
-            <h1 class="text-4xl font-serif text-grey-600 mb-90">Welcome <%= userdetils.firstName %>!</h1>
             <h1 class="text-4xl font-serif text-grey-600 mb-90">
                 <%= sport.name %>!
             </h1>
             </h1>
             <div class="flex mb-4">
-                <a href="/createsession/<%=sport.id%>" class="mr-4 font-serif text-sky-900 hover:underline">Create
+                <a href="/createsession/<%=sport.id%>" class="mr-4 text-xl font-serif text-sky-900 hover:underline">Create
                     Session</a>
             </div>
             <hr class="bg-zinc-100 h-px">
-            <h3 class="text-xl font-serif text-black-600">Available Sessions</h3>
-            <h4 class="text-l mt-5 font-serif text-black-600">your sessions </h4>
+            <h3 class="text-2xl font-serif text-black-600">Available Sessions</h3>
+            <h4 class="text-xl mt-5 font-serif text-black-600">your sessions </h4>
+              <% c=0 %>
 
             <% for(var i=0; i<sessions.length; i++) { %>
                 <% if( userdetils.id==sessions[i].userId ){%>
+                    <% c=1 %>
                     <div
                         class="max-w-m mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
@@ -56,10 +57,15 @@
                     </div>
                 <% } %>
              <% } %>
-        <h4 class="text-l mt-5 font-serif text-black-600">other sessions</h4>
+             <% if (c==0) {%>
+                <p class="text-m mt-5 font-serif text-black-300">No sessions available</p>
+             <% } %>
+        <% c=0 %>
+        <h4 class="text-xl mt-5 font-serif text-black-600">other sessions</h4>
 
             <% for(var i=0; i<sessions.length; i++) { %>
                      <% if( userdetils.id !=sessions[i].userId ){%>
+                        <% c=1 %>
                          <div
                             class="max-w-m mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
@@ -85,8 +91,11 @@
                             </a>
                         </div>
                      <% } %>
-                <% } %>
-            <h4 class="text-l mt-5 font-serif text-black-600">joined sessions </h4>
+                <% } %> 
+                <% if (c==0) {%>
+                    <p class="text-m mt-5 font-serif text-black-300">No sessions available</p>
+                 <% } %>
+            <h4 class="text-xl mt-5 font-serif text-black-600">joined sessions </h4>
         </div>
  </body>
 </html>

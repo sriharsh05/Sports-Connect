@@ -290,6 +290,28 @@ app.post(
   async (request, response) => {
     const players = request.body.playernames.split(",");
     const sport = await Sport.findSportById(request.body.sportId);
+    
+    // const dateToday = new Date().toISOString().substring(0,16);
+    // if (request.body.dateTime < dateToday) {
+    //   request.flash("error", "Date should not be less than today's date!");
+    //   response.redirect(`/createsession/${sport.id}`);
+    // }
+    if (request.body.address.length == 0) {
+      request.flash("error", "Address should not be empty.");
+      return response.redirect(`/createsession/${sport.id}`);
+    }
+    if (request.body.playernames.length == 0) {
+      request.flash("error", "players cannot be empty");
+      return response.redirect(`/createsession/${sport.id}`);
+    }
+    if (request.body.playersLimit < 2 ) {
+      request.flash("error", "Atleast 2 players must be specified");
+      return response.redirect(`/createsession/${sport.id}`);
+    }
+    if (players.length > request.body.playersLimit) {
+      request.flash("error", "Number of PLayers exceeded the limit!");
+      response.redirect(`/createsession/${sport.id}`);
+    }
     try {
        if (players.length < request.body.playersLimit) {
         await Session.createSession({

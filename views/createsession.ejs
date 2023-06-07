@@ -11,7 +11,7 @@
 </head>
 
 <body class="bg-stone-300">
-    include('header')
+    <%- include('header') %>
     <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
     <div class="grid grid-cols-7">
         <div class="col-start-3 col-span-3">
@@ -57,7 +57,7 @@
                     <% for(var i=0; i<messages.error.length; i++) { %>
                         <li>
                             <%= messages.error[i] %>
-                        </li>
+                        </li> 
                         <% } %>
                             <% } %>
             </div>
