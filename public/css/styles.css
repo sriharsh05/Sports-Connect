@@ -1,3 +1,13 @@
 .Sport-Item:hover .trash-icon {
     display: block;
   }
+
+  .editcancle {
+    display: inline-flex;
+  }
+  
+  .editcancle a {
+    display: flex;
+    align-items: center;
+    margin-right: 10px; /* Adjust the spacing between the elements */
+  }

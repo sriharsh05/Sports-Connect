@@ -268,8 +268,7 @@ app.post(
   async (request, response) => {
     const sport = await Sport.findSportById(request.params.id);
     try {
-      const updatedSport = await Sport.updateSport(request.body.name, sport.id);
-      console.log(updatedSport);
+      await Sport.updateSport(request.body.name, sport.id);
       return response.redirect(`/sessionpage/${request.params.id}`);
     } catch (error) {
       console.log(error);
@@ -322,12 +321,6 @@ app.post(
   async (request, response) => {
     const players = request.body.playernames.split(",");
     const sport = await Sport.findSportById(request.body.sportId);
-    
-    // const dateToday = new Date().toISOString().substring(0,16);
-    // if (request.body.dateTime < dateToday) {
-    //   request.flash("error", "Date should not be less than today's date!");
-    //   response.redirect(`/createsession/${sport.id}`);
-    // }
     if (request.body.address.length == 0) {
       request.flash("error", "Address should not be empty.");
       return response.redirect(`/createsession/${sport.id}`);
@@ -345,7 +338,6 @@ app.post(
       response.redirect(`/createsession/${sport.id}`);
     }
     try {
-       if (players.length < request.body.playersLimit) {
         await Session.createSession({
           sportname: sport.id,
           time: request.body.dateTime,
@@ -356,7 +348,6 @@ app.post(
           userId: request.user.id,
         });
         response.redirect(`/sessionpage/${sport.id}`);
-      }
     } catch (error) {
       console.log(error);
     }
@@ -400,4 +391,65 @@ app.get(
     });
   }
 );
+
+app.get(
+  "/createdsession/editSession/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const session = await Session.findSessionById(request.params.id);
+    const sport = await Sport.findSportById(session.sportname);
+    try {
+      response.render("editSession", {
+        session,
+        sport,
+        csrfToken: request.csrfToken(),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+app.post(
+  "/editsession/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const players = request.body.playernames.split(",");
+    const sport = await Sport.findSportById(request.body.sportId);
+    if (request.body.address.length == 0) {
+      request.flash("error", "Address should not be empty.");
+      return response.redirect(`/createsession/${sport.id}`);
+    }
+    if (request.body.playernames.length == 0) {
+      request.flash("error", "players cannot be empty");
+      return response.redirect(`/createsession/${sport.id}`);
+    }
+    if (request.body.playersLimit < 2 ) {
+      request.flash("error", "Atleast 2 players must be specified");
+      return response.redirect(`/createsession/${sport.id}`);
+    }
+    if (players.length > request.body.playersLimit) {
+      request.flash("error", "Number of PLayers exceeded the limit!");
+      response.redirect(`/createsession/${sport.id}`);
+    }
+    try {
+        const session = Session.findSessionById(request.params.id);
+        await Session.updateSession({
+          sportname: sport.id,
+          time: request.body.dateTime,
+          address: request.body.address,
+          playernames: players,
+          playerscount: request.body.playersLimit,
+          sessionid: request.params.id
+        });
+        response.redirect(`/sessionpage/${sport.id}`);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+
+
 module.exports = app;

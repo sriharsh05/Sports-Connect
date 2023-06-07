@@ -45,6 +45,16 @@ module.exports = (sequelize, DataTypes) => {
       return this.findByPk(id);
     }
 
+    static updateSession({sportname,time,address,playernames,playerscount,sessionid}){
+      return this.update({
+        sportname,
+          time,
+          address,
+          playernames,
+          playerscount,
+        },
+        { where: { id: sessionid } });
+    }
   }
   Session.init({
     sportname: DataTypes.INTEGER,
