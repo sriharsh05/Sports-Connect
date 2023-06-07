@@ -246,6 +246,38 @@ app.post(
   }
 );
 
+app.get(
+  "/editsport/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response, next) => {
+    const sport = await Sport.findSportById(request.params.id);
+    try {
+      response.render("editsport", {
+        sport,
+        csrfToken: request.csrfToken(),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+app.post(
+  "/sport/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const sport = await Sport.findSportById(request.params.id);
+    try {
+      const updatedSport = await Sport.updateSport(request.body.name, sport.id);
+      console.log(updatedSport);
+      return response.redirect(`/sessionpage/${request.params.id}`);
+    } catch (error) {
+      console.log(error);
+      return response.status(422).json(error);
+    }
+  }
+);
+
 app.delete(
   "/sports/:id",
   connectEnsureLogin.ensureLoggedIn(),

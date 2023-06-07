@@ -39,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
       return this.findByPk(id);
     }
 
+    static async updateSport(name, id) {
+      return this.update({ name: name },
+        { where: { id: id } });
+    }
+
   }
   Sport.init({
     name: DataTypes.STRING

@@ -9,19 +9,50 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/styles.css" />
     <title>Sports Scheduler</title>
+    <script>
+    var token = document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute("content");
+
+  function deleteSport(id) {
+    fetch(`/sports/${id}`, {
+      method: "delete",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        "_csrf": token
+      })
+    })
+      .then((res) => {
+        if (res.ok) {
+            window.location.replace('/adminpage')
+        }
+      })
+      .catch((err) => console.error(err));
+  }
+</script>
 </head>
 
 <body class="bg-stone-300">
     <%- include('header') %>
         <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
-        <div class="container mx-auto px-10 py-4">
+        <div class="container mx-auto px-10 py-4"> 
             <h1 class="text-4xl font-serif text-grey-600 mb-90">
                 <%= sport.name %>!
             </h1>
             </h1>
-            <div class="flex mb-4">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
                 <a href="/createsession/<%=sport.id%>" class="mr-4 text-xl font-serif text-sky-900 hover:underline">Create
                     Session</a>
+                </div>
+                <div>    
+                <% if(userdetils.role=="admin") { %>   
+                <a href="/editsport/<%=sport.id%>" class="mr-4 text-l font-serif text-sky-900 hover:underline">EditSport
+                </a>
+                <a href="/adminpage" class="mr-4 text-l font-serif text-sky-900 hover:underline " onclick="deleteSport(<%= sport.id %>)"> Delete
+                    Sport</a>  
+                <% } %> 
+                </div>          
             </div>
             <hr class="bg-zinc-100 h-px">
             <h3 class="text-2xl font-serif text-black-600">Available Sessions</h3>
