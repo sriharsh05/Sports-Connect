@@ -40,6 +40,11 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
+
+    static findSessionById(id) {
+      return this.findByPk(id);
+    }
+
   }
   Session.init({
     sportname: DataTypes.INTEGER,

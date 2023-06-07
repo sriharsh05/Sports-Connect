@@ -352,4 +352,20 @@ app.get(
     });
   }
 );
+
+app.get(
+  "/createdsession/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const session = await Session.findSessionById(request.params.id);
+    const sport = await Sport.findSportById(session.sportname);
+    const userdetils = await User.getUserDetails(request.user.id);
+    response.render("createdsession", {
+      userdetils,
+      session,
+      sport,
+      csrfToken: request.csrfToken(),
+    });
+  }
+);
 module.exports = app;
