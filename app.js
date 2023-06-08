@@ -281,7 +281,6 @@ app.delete(
   "/sports/:id",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
-    console.log("Deleting a Sport with ID: ", request.params.id);
     try {
       await Sport.remove(request.params.id, request.user.id);
       return response.json({ success: true });
@@ -353,7 +352,7 @@ app.post(
             sessionId: session.id,
           });
         }
-        response.redirect(`/sessionpage/${sport.id}`);
+        response.redirect(`/createdsession/${session.id}`);
     } catch (error) {
       console.log(error);
     }
@@ -372,11 +371,16 @@ app.get(
       sportid:sport.id,
       userId:request.user.id,
      });
+     const players = new Array(sessions.length);
+     for(let i=0;i<sessions.length;i++) {
+        players[i] = (await Usersession.getPlayers({sessionId:sessions[i].id})).length;
+     }
     const userdetils = await User.getUserDetails(request.user.id);
     response.render("sessionpage", {
       userdetils,
       sport,
       sessions,
+      players,
       csrfToken: request.csrfToken(),
     });
   }
@@ -389,14 +393,29 @@ app.get(
     const session = await Session.findSessionById(request.params.id);
     const sport = await Sport.findSportById(session.sportname);
     const userdetils = await User.getUserDetails(request.user.id);
+    const players = await Usersession.getPlayers({sessionId:request.params.id})
     response.render("createdsession", {
       userdetils,
       session,
       sport,
+      players,
       csrfToken: request.csrfToken(),
     });
   }
 );
+
+app.delete(
+  "/player/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    try {
+      await Usersession.remove(request.params.id);
+      return response.json({ success: true });
+    } catch (error) {
+      return response.status(422).json(error);
+    }
+  }
+);;
 
 app.get(
   "/createdsession/editSession/:id",
@@ -449,7 +468,18 @@ app.post(
           sessionid: request.params.id
         });
         response.redirect(`/sessionpage/${sport.id}`);
-      
+        // const sessionPlayers = Usersession.findPlayersOfSession(request.params.id);
+        // for(let i=0;i<players.length;i++) {
+        //   let flag = false;
+        //   for(let j=0;j<sessionPlayers.length;j++) {
+        //       if(sessionPlayers[j] === players[i])
+        //          flag = true;
+        //   }
+        //   console.log(flag);
+        //   if(!flag){
+        //     await Usersession.addUserSession(players[i], request.params.id);
+        //   }
+        // }
     } catch (error) {
       console.log(error);
     }

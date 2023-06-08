@@ -27,6 +27,18 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
+    static getPlayers({ sessionId }) {
+      return this.findAll({ where: { sessionId } });
+    }
+
+    static async remove(id) {
+      return this.destroy({
+        where: {
+          id,
+        },
+      });
+    }
+
   }
   Usersession.init({
     username: DataTypes.STRING
