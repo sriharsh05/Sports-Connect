@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       Session.belongsTo(models.User,{
         foreignKey: 'userId'
       }) 
+
+      Session.hasMany(models.Usersession,{
+        foreignKey: "sessionId",
+      });
     }
 
     static createSession({sportname,time,address,playernames,playerscount,sessioncreated,userId,}) {
