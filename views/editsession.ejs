@@ -11,8 +11,11 @@
 </head>
 
 <body class="bg-stone-300">
-    <%- include('header') %>
-    <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
+    <div>
+        <%- include('header') %>
+    </div>
+        <a href="/createdsession/<%=session.id%>" class="text-red-900 text-sm px-2 py-1 absolute top-2 left-2">Back</a>
+        <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
     <div class="grid grid-cols-7">
         <div class="col-start-3 col-span-3">
             <div class="w-100 p-6 shadow-lg bg-white rounded-md">

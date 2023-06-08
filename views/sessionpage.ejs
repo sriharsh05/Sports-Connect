@@ -33,7 +33,15 @@
 </head>
 
 <body class="bg-stone-300">
-    <%- include('header') %>
+    <div>
+        <%- include('header') %>
+    </div>
+        <% if(userdetils.role=="admin") { %> 
+        <a href="/adminpage" class="text-red-900 text-sm px-2 py-1 absolute top-2 left-2">Back</a>
+        <% } %>
+        <% if(userdetils.role=="player") { %> 
+            <a href="/playerhome" class="text-red-900 text-sm px-2 py-1 absolute top-2 left-2">Back</a>
+        <% } %>
         <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
         <div class="container mx-auto px-10 py-4"> 
             <h1 class="text-4xl font-serif text-grey-600 mb-90">
