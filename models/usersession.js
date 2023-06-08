@@ -20,9 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
 
-    static addUserSession({ username, sessionId }) {
+    static addUserSession({ username, userId, sessionId }) {
       return this.create({
         username,
+        userId,
         sessionId,
       });
     }
