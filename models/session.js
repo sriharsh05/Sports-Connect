@@ -55,6 +55,15 @@ module.exports = (sequelize, DataTypes) => {
         },
         { where: { id: sessionid } });
     }
+
+    static cancelSession({sessionid,sessioncreated,reason}){
+      return this.update({
+        sessioncreated,
+        reason,
+        },
+        { where: { id: sessionid } });
+    }
+
   }
   Session.init({
     sportname: DataTypes.INTEGER,
@@ -62,7 +71,8 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.STRING,
     playernames: DataTypes.ARRAY(DataTypes.STRING),
     playerscount: DataTypes.INTEGER,
-    sessioncreated: DataTypes.BOOLEAN
+    sessioncreated: DataTypes.BOOLEAN,
+    reason: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Session',

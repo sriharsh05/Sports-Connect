@@ -450,6 +450,46 @@ app.post(
   }
 );
 
+app.get(
+  "/createdsession/cancelsession/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const session = await Session.findSessionById(request.params.id);
+    const sport = await Sport.findSportById(session.sportname);
+    try {
+      response.render("cancelsession", {
+        csrfToken: request.csrfToken(),
+        sport,
+        session,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+app.post(
+  "/cancelsession/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    if (request.body.reason.length == 0) {
+      request.flash("error", "Reason should not be empty.");
+      return response.redirect(`/createdsession/cancelsession/${id}`);
+    }
+    try {
+      const session = await Session.findSessionById(request.params.id);
+      await Session.cancelSession({
+        sessionid: request.params.id,
+        sessioncreated: false,
+        reason: request.body.reason,
+      });
+      return response.redirect(`/sessionpage/${session.sportname}`);
+    } catch (error) {
+      console.log(error);
+      return response.status(422).json(error);
+    }
+  }
+);
 
 
 module.exports = app;

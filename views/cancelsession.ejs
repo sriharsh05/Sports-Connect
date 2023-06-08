@@ -19,7 +19,7 @@
         <div class="grid grid-cols-6">
             <div class="col-start-3 col-span-2">
                 <h1 class="text-xl font-serif text-black-600 mb-90">Cancel Session</h1>
-                <form action="/sports" method="post">
+                <form action="/cancelsession/<%=session.id%>" method="post">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                     <div class="flex gap-2 py-4">
                         <div class="flex-auto">
