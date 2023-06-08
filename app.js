@@ -70,7 +70,7 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-const { User, Sport, Session } = require("./models");
+const { User, Sport, Session, Usersession } = require("./models");
 
 //set ejs as view engine
 app.set("view engine", "ejs");
@@ -338,7 +338,7 @@ app.post(
       response.redirect(`/createsession/${sport.id}`);
     }
     try {
-        await Session.createSession({
+        const session = await Session.createSession({
           sportname: sport.id,
           time: request.body.dateTime,
           address: request.body.address,
@@ -347,6 +347,12 @@ app.post(
           sessioncreated: true,
           userId: request.user.id,
         });
+        for (let i = 0; i < players.length; i++) {
+          await Usersession.addUserSession({
+            username: players[i],
+            sessionId: session.id,
+          });
+        }
         response.redirect(`/sessionpage/${sport.id}`);
     } catch (error) {
       console.log(error);

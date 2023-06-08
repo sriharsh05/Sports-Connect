@@ -19,6 +19,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'sessionId',
       })
     }
+
+    static addUserSession({ username, sessionId }) {
+      return this.create({
+        username,
+        sessionId,
+      });
+    }
+
   }
   Usersession.init({
     username: DataTypes.STRING
