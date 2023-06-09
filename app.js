@@ -346,6 +346,11 @@ app.post(
           sessioncreated: true,
           userId: request.user.id,
         });
+        await Usersession.addUserSession({
+          username: request.user.firstName ,
+          userId: request.user.id,
+          sessionId: session.id,
+        });
         for (let i = 0; i < players.length; i++) {
           await Usersession.addUserSession({
             username: players[i],
@@ -480,6 +485,7 @@ app.post(
   async (request, response) => {
     const players = request.body.playernames.split(",");
     const sport = await Sport.findSportById(request.body.sportId);
+    const availablePlayers = Usersession.getPlayers({sessionId:request.params.id});
     if (request.body.address.length == 0) {
       request.flash("error", "Address should not be empty.");
       return response.redirect(`/createsession/${sport.id}`);
@@ -488,13 +494,13 @@ app.post(
       request.flash("error", "players cannot be empty");
       return response.redirect(`/createsession/${sport.id}`);
     }
-    if (request.body.playersLimit < 2 ) {
-      request.flash("error", "Atleast 2 players must be specified");
-      return response.redirect(`/createsession/${sport.id}`);
-    }
-    if (players.length > request.body.playersLimit) {
+    if (players.length + availablePlayers.length > request.body.playersLimit) {
       request.flash("error", "Number of PLayers exceeded the limit!");
       response.redirect(`/createsession/${sport.id}`);
+    }
+    if (request.body.playersLimit < availablePlayers.length + players.length ) {
+      request.flash("error", "Number of players is less the players already in the session");
+      return response.redirect(`/createsession/${sport.id}`);
     }
     try {
         const session = Session.findSessionById(request.params.id);
@@ -506,19 +512,13 @@ app.post(
           playerscount: request.body.playersLimit,
           sessionid: request.params.id
         });
+        for (let i = 0; i < players.length; i++) {
+          await Usersession.addUserSession({
+            username: players[i],
+            sessionId: request.params.id,
+          });
+        }
         response.redirect(`/sessionpage/${sport.id}`);
-        // const sessionPlayers = Usersession.findPlayersOfSession(request.params.id);
-        // for(let i=0;i<players.length;i++) {
-        //   let flag = false;
-        //   for(let j=0;j<sessionPlayers.length;j++) {
-        //       if(sessionPlayers[j] === players[i])
-        //          flag = true;
-        //   }
-        //   console.log(flag);
-        //   if(!flag){
-        //     await Usersession.addUserSession(players[i], request.params.id);
-        //   }
-        // }
     } catch (error) {
       console.log(error);
     }
