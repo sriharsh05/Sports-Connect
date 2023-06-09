@@ -16,6 +16,7 @@
     <div class="container mx-auto px-10 py-4">
       <h1 class="text-4xl font-serif text-grey-600 mb-90">Welcome <%= UserName %>!</h1>
       <hr class="bg-zinc-100 h-px">
+      <%- include('joinedsessions') %>
       <h3 class="text-xl font-serif text-black-600">Available sports</h3>
       <ul class="space-y-2">
         <% for(var i=0; i<sportsList.length; i++) { %>

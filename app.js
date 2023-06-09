@@ -175,10 +175,20 @@ app.get(
     const loggedInUser = request.user.id;
     const UserName = request.user.firstName;
     const sportsList = await Sport.getAllSports(loggedInUser);
+    const joinedsessions = await Usersession.getJoinedSessions({userId:loggedInUser});
+    const sessions = new Array(joinedsessions.length);
+    const joinedsports =  new Array(joinedsessions.length);
+    for (let i = 0;i<joinedsessions.length;i++) {
+      sessions[i] = await Session.findSessionById(joinedsessions[i].sessionId); 
+      const sportId = sessions[i].sportname;
+      joinedsports[i] = await Sport.findSportById(sportId,loggedInUser)
+    }
     if (request.accepts("html")) {
       response.render("playerhome", {
         UserName,
         sportsList,
+        sessions,
+        joinedsports,
         csrfToken: request.csrfToken(),
       });
     } else {
@@ -195,10 +205,20 @@ app.get(
     const UserName = request.user.firstName;
     const sportsList = await Sport.getAllSports(loggedInUser);
     const userdetils = await User.getUserDetails(loggedInUser);
+    const joinedsessions = await Usersession.getJoinedSessions({userId:loggedInUser});
+    const sessions = new Array(joinedsessions.length);
+    const joinedsports =  new Array(joinedsessions.length);
+    for (let i = 0;i<joinedsessions.length;i++) {
+      sessions[i] = await Session.findSessionById(joinedsessions[i].sessionId); 
+      const sportId = sessions[i].sportname;
+      joinedsports[i] = await Sport.findSportById(sportId,loggedInUser)
+    }
     response.render("adminpage", {
       UserName,
       sportsList,
       userdetils,
+      sessions,
+      joinedsports,
       csrfToken: request.csrfToken(),
     });
   }

@@ -65,11 +65,9 @@
             <hr class="bg-zinc-100 h-px">
             <h3 class="text-2xl font-serif text-black-600">Available Sessions</h3>
             <h4 class="text-xl mt-5 font-serif text-black-600">your sessions </h4>
-              <% c=0 %>
 
             <% for(var i=0; i<sessions.length; i++) { %>
                 <% if( userdetils.id==sessions[i].userId ){%>
-                    <% c=1 %>
                     <div
                         class="max-w-m mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
@@ -96,15 +94,13 @@
                     </div>
                 <% } %>
              <% } %>
-             <% if (c==0) {%>
+             <% if (sessions.length==0) {%>
                 <p class="text-m mt-5 font-serif text-black-300">No sessions available</p>
              <% } %>
-        <% c=0 %>
         <h4 class="text-xl mt-5 font-serif text-black-600">other sessions</h4>
 
             <% for(var i=0; i<sessions.length; i++) { %>
                      <% if( userdetils.id !=sessions[i].userId ){%>
-                        <% c=1 %>
                          <div
                             class="max-w-m mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
@@ -131,7 +127,7 @@
                         </div>
                      <% } %>
                 <% } %> 
-                <% if (c==0) {%>
+                <% if (sessions.length==0) {%>
                     <p class="text-m mt-5 font-serif text-black-300">No sessions available</p>
                  <% } %>
         </div>

@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model,Op
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Usersession extends Model {
@@ -47,6 +47,15 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
+
+    static getJoinedSessions({userId}){
+      return this.findAll({
+        where: {
+          userId,
+        },
+         } );
+    }
+
 
   }
   Usersession.init({

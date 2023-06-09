@@ -22,7 +22,8 @@
         <a href="/reports" class="font-serif text-sky-900 hover:underline">Reports</a>
       </div>
       <hr class="bg-zinc-100 h-px">
-      <h3 class="text-xl font-serif text-black-600">Available sports</h3>
+      <%- include('joinedsessions') %>
+      <h3 class="text-xl font-serif text-black-600 mt-2">Available sports</h3>
       <h4 class="text-l mt-5 font-serif text-black-600">Created by you </h4>
       <ul class="space-y-2">
         <% for(var i=0; i<sportsList.length; i++) { %>
