@@ -422,11 +422,28 @@ app.post(
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
     try {
-      const session = await Session.findSessionById(request.params.id);
       await Usersession.addUserSession({
         username: request.user.firstName ,
         userId: request.user.id,
         sessionId: request.params.id,
+      });
+      return response.redirect(
+        `/createdsession/${request.params.id}`
+      );
+    } catch (error) {
+      console.log(error);
+      return response.status(422).json(error);
+    }
+  }
+);
+
+app.post(
+  "/leavesession/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    try {
+      await Usersession.removeUserSession({
+        userId: request.user.id,
       });
       return response.redirect(
         `/createdsession/${request.params.id}`

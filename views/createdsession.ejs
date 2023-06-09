@@ -45,6 +45,22 @@
                 })
                 .catch((err) => console.error(err))
         }
+
+        function leaveSession(id) {
+            fetch(`/leavesession/${id}`, {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    "_csrf": token
+                })
+            })
+                .then((res) => {
+                    if (res.ok) {
+                        window.location.reload()
+                    }
+                })
+                .catch((err) => console.error(err))
+        }
       </script>
 </head>
 
@@ -129,16 +145,30 @@
           </svg>
           <p class="text-sky-900">Cancel Session</p>
             </a>
-        <%}%>   
+        <%}%>  
+    <% flag = false %>    
+    <% for(let i=0;i<players.length;i++) { %>
+        <%  if(players[i].userId == userdetils.id ) { %>
+           <% flag = true %>
+          <% } %>
+     <% } %>
+     <%  if(!flag) { %>
         <a href="#" onclick="joinSession(<%=session.id%>)" ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-sky-900">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg> 
         <p class="text-sky-900">Join Session</p>
          </a>
+         <% } %>
+      <% if(flag) { %> 
+        <a href="#" onclick="leaveSession(<%=session.id%>)"  ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-sky-900">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+        </svg>         
+        <p class="text-sky-900">Leave Session</p>
+         </a> 
+         <% } %> 
       </div>
       
   </div>
 </body>
-
 </html>
  
