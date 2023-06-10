@@ -287,6 +287,10 @@ app.post(
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
     const sport = await Sport.findSportById(request.params.id);
+    if (request.body.name.length == 0) {
+      request.flash("error", "Please, Fill the sport!");
+      return response.redirect(`/editsport/${request.params.id}`);
+    }
     try {
       await Sport.updateSport(request.body.name, sport.id);
       return response.redirect(`/sessionpage/${request.params.id}`);
@@ -302,7 +306,13 @@ app.delete(
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
     try {
-      await Sport.remove(request.params.id, request.user.id);
+      console.log("in delete 0");
+      await Usersession.removeSport({sportId:request.params.id});
+      console.log("in delete 1");
+      await Session.removeSport({sportId:request.params.id});
+      console.log("in delete 2");
+      await Sport.remove(request.params.id);
+      console.log("in delete 3");
       return response.json({ success: true });
     } catch (error) {
       return response.status(422).json(error);
@@ -374,11 +384,13 @@ app.post(
           username: request.user.firstName ,
           userId: request.user.id,
           sessionId: session.id,
+          sportId: sport.id,
         });
         for (let i = 0; i < players.length; i++) {
           await Usersession.addUserSession({
             username: players[i],
             sessionId: session.id,
+            sportId: sport.id,
           });
         }
         response.redirect(`/createdsession/${session.id}`);
@@ -488,10 +500,13 @@ app.post(
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
     try {
+      const session = await Session.findSessionById(request.params.id);
+      const sport = await Sport.findSportById(session.sportname);
       await Usersession.addUserSession({
         username: request.user.firstName ,
         userId: request.user.id,
         sessionId: request.params.id,
+        sportId: sport.id,
       });
       return response.redirect(
         `/createdsession/${request.params.id}`
@@ -548,8 +563,6 @@ app.post(
     const players = request.body.playernames.split(",");
     const sport = await Sport.findSportById(request.body.sportId);
     const availablePlayers = await Usersession.getPlayers({sessionId:request.params.id});
-    console.log("heh ",availablePlayers.length)
-    console.log("heh ",players.length)
     if (request.body.dateTime === "") {
       request.flash("error", "Date should not be empty.");
       return response.redirect(`/createdsession/editsession/${request.params.id}`);
@@ -558,12 +571,12 @@ app.post(
       request.flash("error", "Address should not be empty.");
       return response.redirect(`/createdsession/editsession/${request.params.id}`);
     }
-    if (request.body.playernames.length == 0) {
-      request.flash("error", "players cannot be empty");
-      return response.redirect(`/createdsession/editsession/${request.params.id}`);
-    }
     if (request.body.playersLimit < availablePlayers.length + players.length ) {
       request.flash("error", "Players exceed limit ");
+      return response.redirect(`/createdsession/editsession/${request.params.id}`);
+    }
+    if (request.body.playersLimit < 2 ) {
+      request.flash("error", "Atleast 2 players must be specified");
       return response.redirect(`/createdsession/editsession/${request.params.id}`);
     }
     try {
@@ -577,10 +590,13 @@ app.post(
           sessionid: request.params.id
         });
         for (let i = 0; i < players.length; i++) {
+          if(players[i]!== ""){
           await Usersession.addUserSession({
             username: players[i],
             sessionId: request.params.id,
+            sportId:sport.id,
           });
+        }
         }
         response.redirect(`/sessionpage/${sport.id}`);
     } catch (error) {

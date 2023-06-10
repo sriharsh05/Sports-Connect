@@ -26,23 +26,23 @@
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                     <input type="text" name="sportId" class="hidden" value="<%= sport.id %>" hidden>
                     <div class="m-2">
-                        <label class="text-xl mb-2">Input Date and Time of session</label>
+                        <label class="text-xl mb-2" for="dateTime">Input Date and Time of session</label>
                         <input type="datetime-local" name="dateTime"
                             class="border w-full mt-3 text-l px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-900 border-gray-400">
                     </div>
                     <div class="m-2">
-                        <label class="text-xl mb-2">Input Address of session to be held</label>
+                        <label class="text-xl mb-2" for="address">Input Address of session to be held</label>
                         <textarea name="address" cols="50" rows="5"
                             class="border w-full mt-3 text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-900 border-gray-400"></textarea>
 
                     </div>
                     <div class="m-2">
-                        <label class="text-xl mb-2">Enter Players Joining sessions(Comma-seperated)</label>
+                        <label class="text-xl mb-2" for="playernames">Enter Players Joining sessions(Comma-seperated)</label>
                         <input type="text" name="playernames"
                             class="border w-full mt-3 text-l px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-900 border-gray-400">
                     </div>
                     <div class="m-2">
-                        <label class="text-xl mb-2 ">Input total No. of Players</label>
+                        <label class="text-xl mb-2" for="playersLimit">Input total No. of Players</label>
                         <input type="number" name="playersLimit"
                             class="border w-full mt-3 text-l px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-900 border-gray-400">
                     </div>

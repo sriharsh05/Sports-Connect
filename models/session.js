@@ -79,6 +79,14 @@ module.exports = (sequelize, DataTypes) => {
         { where: { id: sessionid } });
     }
 
+    static async removeSport({sportId}) {
+      return this.destroy({
+        where: {
+          sportname:sportId,
+        },
+      });
+    }
+
   }
   Session.init({
     sportname: DataTypes.INTEGER,

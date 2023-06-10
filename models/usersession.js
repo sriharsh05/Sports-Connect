@@ -18,13 +18,20 @@ module.exports = (sequelize, DataTypes) => {
       Usersession.belongsTo(models.Session,{
         foreignKey: 'sessionId',
       })
-    }
+     
+      Usersession.belongsTo(models.Sport,{
+        foreignKey: 'sportId',
+      })
 
-    static addUserSession({ username, userId, sessionId }) {
+    }
+      
+
+    static addUserSession({ username, userId, sessionId, sportId }) {
       return this.create({
         username,
         userId,
         sessionId,
+        sportId,
       });
     }
 
@@ -55,6 +62,14 @@ module.exports = (sequelize, DataTypes) => {
           userId,
         },
          } );
+    }
+
+    static async removeSport({sportId}) {
+      return this.destroy({
+        where: {
+          sportId,
+        },
+      });
     }
 
 

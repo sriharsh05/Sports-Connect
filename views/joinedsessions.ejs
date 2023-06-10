@@ -3,15 +3,15 @@
             <% for(var i=0; i<sessions.length; i++) { %>
                 <%   if(new Date(sessions[i].time) > new Date()) { %>
                          <div
-                            class="max-w-m mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                            class="max-w-m mt-4 p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 <%= sessions[i].address %>
                             </h5>
-                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">
                                 <%= sessions[i].time %>
                             </p>
-                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">
                                 <%= joinedsports[i].name %>
                             </p>
                             <% if(sessions[i].sessioncreated) { %>

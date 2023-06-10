@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       Sport.belongsTo(models.User,{
         foreignKey: 'userId',
       })
+
+      Sport.hasMany(models.Usersession,{
+        foreignKey: "sportId",
+      });
     }
     static addSport({ name, userId }) {
       return this.create({
@@ -26,11 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll();
     }
 
-    static async remove(id, userId) {
+    static async remove(id) {
       return this.destroy({
         where: {
           id,
-          userId,
         },
       });
     }
