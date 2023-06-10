@@ -1,6 +1,7 @@
 <h4 class="text-xl mt-5 font-serif text-black-600"> Upcomming sessions</h4>
 
             <% for(var i=0; i<sessions.length; i++) { %>
+                <%   if(new Date(sessions[i].time) > new Date()) { %>
                          <div
                             class="max-w-m mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
@@ -29,6 +30,7 @@
                             <p class="mb-3 font-normal text-red-700 dark:text-red-400">
                                 Session Cancled because of : <%= sessions[i].reason %>
                             </p>
-                            <% } %>
+                            <% } %>    
                         </div>
+                        <% } %>    
             <% } %> 

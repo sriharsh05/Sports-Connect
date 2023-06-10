@@ -45,6 +45,17 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
+    static findPrevSessionsBySportId({sportid,userId}) {
+      return this.findAll({
+        where: {
+          sportname: sportid,
+          time: {
+            [Op.lt]: new Date(),
+          },
+        },
+      });
+    }
+
     static findSessionById(id) {
       return this.findByPk(id);
     }

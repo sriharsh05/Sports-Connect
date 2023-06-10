@@ -52,6 +52,8 @@
                 <div>
                 <a href="/createsession/<%=sport.id%>" class="mr-4 text-xl font-serif text-sky-900 hover:underline">Create
                     Session</a>
+                <a href="/previoussessions/<%=sport.id%>" class="mr-4 text-xl font-serif text-sky-900 hover:underline">View previous
+                    Session</a>
                 </div>
                 <div>    
                 <% if(userdetils.role=="admin") { %>   
@@ -62,10 +64,10 @@
                 <% } %> 
                 </div>          
             </div>
-            <hr class="bg-zinc-100 h-px">
+            <hr class="bg-zinc-100 h-px m-2">
             <h3 class="text-2xl font-serif text-black-600">Available Sessions</h3>
             <h4 class="text-xl mt-5 font-serif text-black-600">your sessions </h4>
-
+            
             <% for(var i=0; i<sessions.length; i++) { %>
                 <% if( userdetils.id==sessions[i].userId ){%>
                     <div

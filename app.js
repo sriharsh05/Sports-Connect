@@ -340,6 +340,10 @@ app.post(
   async (request, response) => {
     const players = request.body.playernames.split(",");
     const sport = await Sport.findSportById(request.body.sportId);
+    if (request.body.dateTime === "") {
+      request.flash("error", "Date should not be empty.");
+      return response.redirect(`/createsession/${sport.id}`);
+    }
     if (request.body.address.length == 0) {
       request.flash("error", "Address should not be empty.");
       return response.redirect(`/createsession/${sport.id}`);
@@ -411,6 +415,43 @@ app.get(
   }
 );
 
+
+app.get(
+  "/previoussessions/:id",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const sport = await Sport.findSportById(
+      request.params.id,
+      request.user.id
+    );
+    const sessions = await Session.findPrevSessionsBySportId({
+      sportid:sport.id,
+      userId:request.user.id,
+     });
+     const players = new Array(sessions.length);
+     for(let i=0;i<sessions.length;i++) {
+        players[i] = (await Usersession.getPlayers({sessionId:sessions[i].id})).length;
+     }
+    const userdetils = await User.getUserDetails(request.user.id);
+    if (request.accepts("HTML")) {
+    response.render("previoussessions", {
+      userdetils,
+      sport,
+      sessions,
+      players,
+      csrfToken: request.csrfToken(),
+    });
+  }else{
+    response.json({
+      userdetils,
+      sport,
+      sessions,
+      players,
+    })
+  }
+  }
+);
+
 app.get(
   "/createdsession/:id",
   connectEnsureLogin.ensureLoggedIn(),
@@ -469,6 +510,7 @@ app.post(
     try {
       await Usersession.removeUserSession({
         userId: request.user.id,
+        sessionId: request.params.id,
       });
       return response.redirect(
         `/createdsession/${request.params.id}`
@@ -505,22 +547,24 @@ app.post(
   async (request, response) => {
     const players = request.body.playernames.split(",");
     const sport = await Sport.findSportById(request.body.sportId);
-    const availablePlayers = Usersession.getPlayers({sessionId:request.params.id});
+    const availablePlayers = await Usersession.getPlayers({sessionId:request.params.id});
+    console.log("heh ",availablePlayers.length)
+    console.log("heh ",players.length)
+    if (request.body.dateTime === "") {
+      request.flash("error", "Date should not be empty.");
+      return response.redirect(`/createdsession/editsession/${request.params.id}`);
+    }
     if (request.body.address.length == 0) {
       request.flash("error", "Address should not be empty.");
-      return response.redirect(`/createsession/${sport.id}`);
+      return response.redirect(`/createdsession/editsession/${request.params.id}`);
     }
     if (request.body.playernames.length == 0) {
       request.flash("error", "players cannot be empty");
-      return response.redirect(`/createsession/${sport.id}`);
-    }
-    if (players.length + availablePlayers.length > request.body.playersLimit) {
-      request.flash("error", "Number of PLayers exceeded the limit!");
-      response.redirect(`/createsession/${sport.id}`);
+      return response.redirect(`/createdsession/editsession/${request.params.id}`);
     }
     if (request.body.playersLimit < availablePlayers.length + players.length ) {
-      request.flash("error", "Number of players is less the players already in the session");
-      return response.redirect(`/createsession/${sport.id}`);
+      request.flash("error", "Players exceed limit ");
+      return response.redirect(`/createdsession/editsession/${request.params.id}`);
     }
     try {
         const session = Session.findSessionById(request.params.id);
