@@ -213,6 +213,7 @@ app.get(
       const sportId = sessions[i].sportname;
       joinedsports[i] = await Sport.findSportById(sportId,loggedInUser)
     }
+    if (request.accepts("html")) {
     response.render("adminpage", {
       UserName,
       sportsList,
@@ -221,6 +222,15 @@ app.get(
       joinedsports,
       csrfToken: request.csrfToken(),
     });
+  }else {
+    response.json({
+      UserName,
+      sportsList,
+      userdetils,
+      sessions,
+      joinedsports,
+    });
+  }
   }
 );
 
@@ -417,6 +427,7 @@ app.get(
         players[i] = (await Usersession.getPlayers({sessionId:sessions[i].id})).length;
      }
     const userdetils = await User.getUserDetails(request.user.id);
+    if (request.accepts("html")) {
     response.render("sessionpage", {
       userdetils,
       sport,
@@ -424,6 +435,15 @@ app.get(
       players,
       csrfToken: request.csrfToken(),
     });
+  }
+  else{
+    response.json( {
+      userdetils,
+      sport,
+      sessions,
+      players,
+    });
+  }
   }
 );
 
