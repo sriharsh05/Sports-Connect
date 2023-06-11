@@ -71,7 +71,14 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-
+    
+    static findPlayersBySportId({sportid}) {
+      return this.findAll({
+        where: {
+          sportId:sportid,
+        },
+      });
+    }
 
   }
   Usersession.init({

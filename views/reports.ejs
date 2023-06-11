@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="<%= csrfToken %>" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <title>Sports Scheduler</title>
+</head>
+
+<body class="bg-stone-300">
+  <%- include('header') %>
+    <a href="/signout" class="text-red-900 text-sm px-2 py-1 absolute top-2 right-2">Signout</a>
+    <a href="/adminpage" class="text-red-900 text-sm px-2 py-1 absolute top-2 left-2">Back</a>
+    <div class="container mx-auto px-10 py-4">
+      <h3 class="text-3xl font-serif text-black-600 mb-2">Reports</h3>
+      <hr class="bg-zinc-100 h-px">
+      <h3 class="text-xl font-serif text-black-600 m-2">Sports Reports</h3>
+      <% if ((sessionsFuture.length + sessionsPast.length + sessionscanceled.length)==0) { %>
+        <p>No sessions conducted</p>
+        <% } %>
+          <% if((sessionsFuture.length + sessionsPast.length + sessionscanceled.length) !=0) { %>
+            <div class="relative overflow-x-auto">
+              <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" class="px-6 py-3">
+                      Sport name
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Sessions booked
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Conducted
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Yet to be Conducted
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Cancelled
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Total players
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (let i=0; i < sports.length; i++) { %>
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <%= sports[i].name %>
+                      </th>
+                      <td class="px-6 py-4">
+                        <%= sessionsFuture[i] + sessionsPast[i] + sessionscanceled[i] %>
+                      </td>
+                      <td class="px-6 py-4">
+                        <%= sessionsPast[i] %>
+                      </td>
+                      <td class="px-6 py-4">
+                        <%= sessionsFuture[i] %>
+                      </td>
+                      <td class="px-6 py-4">
+                        <%= sessionscanceled[i] %>
+                      </td>
+                      <td class="px-6 py-4">
+                        <%= totalPlayers[i] %>
+                      </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+              </table>
+            </div>
+            <% } %>
+
+    </div>
+</body>
+
+</html>

@@ -633,9 +633,9 @@ app.get(
     const sport = await Sport.findSportById(session.sportname);
     try {
       response.render("cancelsession", {
-        csrfToken: request.csrfToken(),
         sport,
         session,
+        csrfToken: request.csrfToken(),
       });
     } catch (error) {
       console.log(error);
@@ -662,6 +662,36 @@ app.post(
     } catch (error) {
       console.log(error);
       return response.status(422).json(error);
+    }
+  }
+);
+
+app.get(
+  "/reports",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+  const sports = await Sport.findAll();
+  const sessionsFuture = new Array(sports.length);
+  const sessionsPast = new Array(sports.length);
+  const sessionscanceled = new Array(sports.length);
+  const totalPlayers = new Array(sports.length);
+  for (let i = 0; i < sports.length; i++) {
+    sessionsFuture[i] = (await Session.findFutureSessionsBySportId({sportid:sports[i].id})).length;
+    sessionsPast[i] = (await Session.findPastSessionsBySportId({sportid:sports[i].id})).length;
+    sessionscanceled[i] = (await Session.findCanceledSessionsBySportId({sportid:sports[i].id})).length;
+    totalPlayers[i] = (await Usersession.findPlayersBySportId({sportid:sports[i].id})).length;
+  }
+    try {
+      response.render("reports", {
+        sessionsFuture,
+        sessionsPast,
+        sessionscanceled,
+        sports,
+        totalPlayers,
+        csrfToken: request.csrfToken(),
+      });
+    } catch (error) {
+      console.log(error);
     }
   }
 );

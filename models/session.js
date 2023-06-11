@@ -87,6 +87,47 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
+    static findTotalSessionsBySportId({sportid,userId}) {
+      return this.findAll({
+        where: {
+          sportname: sportid,
+        },
+      });
+    }
+
+    static findFutureSessionsBySportId({sportid,userId}) {
+      return this.findAll({
+        where: {
+          sportname: sportid,
+          sessioncreated: true,
+          time: {
+            [Op.gt]: new Date(),
+          },
+        },
+      });
+    }
+
+    static findPastSessionsBySportId({sportid,userId}) {
+      return this.findAll({
+        where: {
+          sportname: sportid,
+          sessioncreated: true,
+          time: {
+            [Op.lt]: new Date(),
+          },
+        },
+      });
+    }
+
+    static findCanceledSessionsBySportId({sportid,userId}) {
+      return this.findAll({
+        where: {
+          sportname: sportid,
+          sessioncreated: false,
+        },
+      });
+    }
+
   }
   Session.init({
     sportname: DataTypes.INTEGER,
