@@ -671,23 +671,21 @@ app.get(
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
   const sports = await Sport.findAll();
-  const sessionsFuture = new Array(sports.length);
-  const sessionsPast = new Array(sports.length);
-  const sessionscanceled = new Array(sports.length);
-  const totalPlayers = new Array(sports.length);
+  const sessionStats = {};
   for (let i = 0; i < sports.length; i++) {
-    sessionsFuture[i] = (await Session.findFutureSessionsBySportId({sportid:sports[i].id})).length;
-    sessionsPast[i] = (await Session.findPastSessionsBySportId({sportid:sports[i].id})).length;
-    sessionscanceled[i] = (await Session.findCanceledSessionsBySportId({sportid:sports[i].id})).length;
-    totalPlayers[i] = (await Usersession.findPlayersBySportId({sportid:sports[i].id})).length;
+    const sportId = sports[i].id;
+    
+    sessionStats[sportId] = {
+      sessionsFuture: (await Session.findFutureSessionsBySportId({ sportid: sportId })).length,
+      sessionsPast: (await Session.findPastSessionsBySportId({ sportid: sportId })).length,
+      sessionsCanceled: (await Session.findCanceledSessionsBySportId({ sportid: sportId })).length,
+      totalPlayers: (await Usersession.findPlayersBySportId({ sportid: sportId })).length
+    };
   }
     try {
       response.render("reports", {
-        sessionsFuture,
-        sessionsPast,
-        sessionscanceled,
+        sessionStats,
         sports,
-        totalPlayers,
         csrfToken: request.csrfToken(),
       });
     } catch (error) {
