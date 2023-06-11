@@ -565,7 +565,7 @@ app.get(
     const session = await Session.findSessionById(request.params.id);
     const sport = await Sport.findSportById(session.sportname);
     try {
-      response.render("editSession", {
+      response.render("editsession", {
         session,
         sport,
         csrfToken: request.csrfToken(),

@@ -143,7 +143,7 @@ describe("Sport Application", function () {
       res = await agent.get(`/adminpage/${latestSport.id}`);
       csrfToken = extractCsrfToken(res);
       const DeletedResponse = await agent
-        .delete(`/adminpage/${latestSport.id}`)
+        .delete(`/sports/${latestSport.id}`)
         .send({
           _csrf: csrfToken,
         });
@@ -166,15 +166,13 @@ describe("Sport Application", function () {
     //   .set("Accept", "application/json");
 
     //   const parsedGroupedResponse = JSON.parse(groupedSportsResponse.text);
-    //   const NoOfSports = parsedGroupedResponse.sportsList.length;
-    //   const latestSport = parsedGroupedResponse.sportsList[NoOfSports - 1];
+    //   const TotalSports = parsedGroupedResponse.sportsList.length;
+    //   const latestSport = parsedGroupedResponse.sportsList[TotalSports - 1];
 
     //   res = await agent.get(`/sessionpage/${latestSport.id}`);
     //   res = await agent.get(`/createsession/${latestSport.id}`);
-    //   console.log("latest sport ID",latestSport.id);
     //   csrfToken = extractCsrfToken(res);
     //   const response2 = await agent.post("/createsession").send({
-    //     sportname: latestSport.id,
     //     time: new Date(),
     //     address: "Stadium",
     //     playernames: "Alan,Alex,Ben,John",
