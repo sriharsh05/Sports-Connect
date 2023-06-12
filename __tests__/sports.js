@@ -151,36 +151,38 @@ describe("Sport Application", function () {
       expect(parseRes).toBe(true);
     });
 
-    // test("Creating a Session", async () => {
-    //   const agent = request.agent(server);
-    //   await login(agent, "admin@gmail.com", "12345678");
-    //   let res = await agent.get("/adminpage");
-    //   res = await agent.get("/createSport");
-    //   let csrfToken = extractCsrfToken(res);
-    //   const response = await agent.post("/sports").send({
-    //      name: "Cricket",
-    //     _csrf: csrfToken,
-    //   });
-    //   const groupedSportsResponse = await agent
-    //   .get("/adminpage")
-    //   .set("Accept", "application/json");
+    test("Creating a Session", async () => {
+      const agent = request.agent(server);
+      await login(agent, "admin@gmail.com", "12345678");
+      let res = await agent.get("/adminpage");
+      res = await agent.get("/createSport");
+      let csrfToken = extractCsrfToken(res);
+      const response = await agent.post("/sports").send({
+         name: "Cricket",
+        _csrf: csrfToken,
+      });
+      const groupedSportsResponse = await agent
+      .get("/adminpage")
+      .set("Accept", "application/json");
 
-    //   const parsedGroupedResponse = JSON.parse(groupedSportsResponse.text);
-    //   const TotalSports = parsedGroupedResponse.sportsList.length;
-    //   const latestSport = parsedGroupedResponse.sportsList[TotalSports - 1];
+      const parsedGroupedResponse = JSON.parse(groupedSportsResponse.text);
+      const TotalSports = parsedGroupedResponse.sportsList.length;
+      const latestSport = parsedGroupedResponse.sportsList[TotalSports - 1];
 
-    //   res = await agent.get(`/sessionpage/${latestSport.id}`);
-    //   res = await agent.get(`/createsession/${latestSport.id}`);
-    //   csrfToken = extractCsrfToken(res);
-    //   const response2 = await agent.post("/createsession").send({
-    //     time: new Date(),
-    //     address: "Stadium",
-    //     playernames: "Alan,Alex,Ben,John",
-    //     playerscount: 10,
-    //     sessioncreated:true,
-    //     _csrf: csrfToken,
-    //   });
-    //   expect(response2.statusCode).toBe(302);
-    // });
+      res = await agent.get(`/sessionpage/${latestSport.id}`);
+      res = await agent.get(`/createsession/${latestSport.id}`);
+      csrfToken = extractCsrfToken(res);
+
+      const response2 = await agent.post(`/createsession/${latestSport.id}`).send({
+        sportname : latestSport.id,
+        time: new Date(),
+        address: "Stadium",
+        playernames: "Alan,Alex,Ben,John",
+        playerscount: 10,
+        sessioncreated:true,
+        _csrf: csrfToken,
+      });
+      expect(response2.statusCode).toBe(302);
+    });
 
 });

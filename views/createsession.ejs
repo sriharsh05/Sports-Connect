@@ -22,9 +22,8 @@
                     <h1 class="text-xl font-serif text-black-600 mb-90 mt-2">
                         <%=sport.name%>
                     </h1>
-                    <form action="/createsession" method="post">
+                    <form action="/createsession/<%= sport.id %>" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                        <input type="text" name="sportId" class="hidden" value="<%= sport.id %>" hidden>
                         <div class="m-2">
                             <label class="text-xl mb-2" for="dateTime">Input Date and Time of session</label>
                             <input type="datetime-local" name="dateTime"

@@ -355,11 +355,11 @@ app.get(
 );
 
 app.post(
-  "/createsession",
+  "/createsession/:id",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
     const players = request.body.playernames.split(",");
-    const sport = await Sport.findSportById(request.body.sportId);
+    const sport = await Sport.findSportById(request.params.id);
     if (request.body.dateTime === "") {
       request.flash("error", "Date should not be empty.");
       return response.redirect(`/createsession/${sport.id}`);
