@@ -10,15 +10,15 @@ Player can also perform all the above tasks except creating a sport.
 
 ## These are some of the screenshots of my project which might find interesting. 
 
-<img width="960" alt="1" src="https://github.com/sriharsh05/sports-scheduler/assets/114745442/347c0f8c-843c-4869-894c-39065ddf6b93">
+<img width="960" alt="1" src="https://github.com/sriharsh05/sports-scheduler/assets/114745442/5f839087-3b94-4a92-8a7a-0194b9917350">
 
-<img width="960" alt="2" src="https://github.com/sriharsh05/sports-scheduler/assets/114745442/f36f8fc0-1bc1-4011-a1d2-973eca5135f1">
+<img width="960" alt="2" src="https://github.com/sriharsh05/sports-scheduler/assets/114745442/e1262592-9483-4843-8f3b-d6eea92a82bb">
 
-<img width="959" alt="3" src="https://github.com/sriharsh05/sports-scheduler/assets/114745442/0ae6fdff-3b37-4fe5-a4a9-f24765018a8a">
+<img width="959" alt="3" src="https://github.com/sriharsh05/sports-scheduler/assets/114745442/824f87e0-ef99-4a7f-bb72-a14ea7a4b462">
 
-<img width="960" alt="4" src="https://github.com/sriharsh05/sports-scheduler/assets/114745442/6a4eca95-42bb-4830-a240-b66392c73cca">
+<img width="960" alt="4" src="https://github.com/sriharsh05/sports-scheduler/assets/114745442/41a72128-5411-4783-9238-5acbee38b78c">
 
-<img width="960" alt="5" src="https://github.com/sriharsh05/sports-scheduler/assets/114745442/d8b7e3a2-1a3a-42a8-9f31-4b9eca88a07a">
+<img width="960" alt="5" src="https://github.com/sriharsh05/sports-scheduler/assets/114745442/3b396a84-0431-41cd-8964-a407044c6de3">
 
 
 Here is the link for live application : https://sports-scheduler-0umi.onrender.com
